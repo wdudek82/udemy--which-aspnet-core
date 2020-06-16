@@ -1,0 +1,69 @@
+@model OrderDisplayModel
+
+@{
+    ViewData["Title"] = "Display";
+}
+
+<h1>Display</h1>
+
+@if (Model.Order is null)
+{
+    <h4>The requested record was not found.</h4>
+}
+else
+{
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>
+                <string>Order Name</string>
+            </td>
+            <td>@Model.Order.OrderName</td>
+        </tr>
+        <tr>
+            <td>
+                <string>Order Date</string>
+            </td>
+            <td>@Model.Order.OrderDate</td>
+        </tr>
+        <tr>
+            <td>
+                <string>Order Total</string>
+            </td>
+            <td>@($"{Model.Order.Total:C}")</td>
+        </tr>
+        <tr>
+            <td>
+                <string>Item Ordered</string>
+            </td>
+            <td>@Model.ItemPurchased</td>
+        </tr>
+        <tr>
+            <td>
+                <string>Quantity</string>
+            </td>
+            <td>@Model.Order.Quantity</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @* <a class="btn btn-danger" asp-page="./Delete" asp-route-id="@Model.Order.Id">Delete Order</a> *@
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+@*     <form method="post"> *@
+@*         <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@*         <input asp-for="UpdateModel.Id" value="@Model.Order.Id" type="hidden"> *@
+@* *@
+@*         <div class="form-group"> *@
+@*             <label asp-for="UpdateModel.OrderName" class="control-label"></label> *@
+@*             <input asp-for="UpdateModel.OrderName" value="@Model.Order.OrderName" class="form-control"> *@
+@*             <span asp-validation-for="UpdateModel.OrderName" class="text-danger"></span> *@
+@*         </div> *@
+@* *@
+@*         <div class="form-group"> *@
+@*             <button type="submit" class="btn btn-primary">Update Order Name</button> *@
+@*         </div> *@
+@*     </form> *@
+}
