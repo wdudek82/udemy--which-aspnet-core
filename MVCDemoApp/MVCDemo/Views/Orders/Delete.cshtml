@@ -1,0 +1,17 @@
+@model DataLibrary.Models.OrderModel
+
+@if (Model is null)
+{
+    <h4>The requested record was not found.</h4>
+}
+else
+{
+    <div class="h4">
+        Are you sure you want to delete order id @Model.Id you placed @Model.OrderDate?
+    </div>
+
+    <form asp-action="Delete">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+}
+

@@ -50,7 +50,7 @@ namespace MVCDemo.Controllers
 
             var id = await _orderData.CreateOrder(order);
 
-            return RedirectToAction("Display", new { id });
+            return RedirectToAction("Display", new {id});
         }
 
         public async Task<IActionResult> Display(int id)
@@ -68,6 +68,29 @@ namespace MVCDemo.Controllers
             }
 
             return View(displayOrder);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, string orderName)
+        {
+            await _orderData.UpdateOrderName(id, orderName);
+
+            return RedirectToAction("Display", new {id});
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var order = await _orderData.GetOrder(id);
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(OrderModel order)
+        {
+            await _orderData.DeleteOrder(order.Id);
+
+            return RedirectToAction("Create");
         }
     }
 }
