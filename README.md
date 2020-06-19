@@ -6,4 +6,6 @@
   - DataLibrary
   - TimsDinerDB
 - RazorPageDemoApp
-- MVCDemoApp 
+- MVCDemoApp
+- ApiDemoApp
+- BlazorServerApp
