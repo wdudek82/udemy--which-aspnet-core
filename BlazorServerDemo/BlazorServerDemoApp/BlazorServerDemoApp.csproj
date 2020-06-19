@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="DataLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>DataLibrary.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
