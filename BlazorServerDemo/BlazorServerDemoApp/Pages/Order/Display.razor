@@ -1,0 +1,76 @@
+@page "/Order/Display/{Id:int}"
+@using DataLibrary.Data
+@inject IFoodData FoodData
+@inject IOrderData OrderData
+
+<h3>Display</h3>
+
+@if (_order is null && IsLoading)
+{
+    <h4>Record Loading...</h4>
+}
+else if (_order is null && !IsLoading)
+{
+    <h4>Something went wrong.:(</h4>
+}
+else
+{
+    <table class="table">
+        <tbody>
+        <tr>
+            <td><strong>Order Name</strong></td>
+            <td>@_order.OrderName</td>
+        </tr>
+        <tr>
+            <td><strong>Order Date</strong></td>
+            <td>@_order.OrderDate</td>
+        </tr>
+        <tr>
+            <td><strong>Item Ordered</strong></td>
+            <td>@_itemPurchased</td>
+        </tr>
+        <tr>
+            <td><strong>Quantity</strong></td>
+            <td>@_order.Quantity</td>
+        </tr>
+        <tr>
+            <td><strong>Total</strong></td>
+            <td>@($"{_order.Total:C}")</td>
+        </tr>
+        </tbody>
+    </table>
+}
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private OrderModel _order = new OrderModel();
+    private string _itemPurchased;
+    private List<FoodModel> _foodItems = new List<FoodModel>();
+    public bool IsLoading { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _foodItems = await FoodData.GetFood();
+        _order = await GetOrderById(Id);
+    }
+
+    public async Task<OrderModel> GetOrderById(int id)
+    {
+        IsLoading = true;
+
+        var order = await OrderData.GetOrder(id);
+        if (order != null)
+        {
+            var food = _foodItems.Find(x => x.Id == order.FoodId);
+            var price = food?.Price ?? 0;
+            _itemPurchased = food?.Title ?? "-";
+            order.Total = order.Quantity * price;
+        }
+
+        IsLoading = false;
+        return order;
+    }
+}
