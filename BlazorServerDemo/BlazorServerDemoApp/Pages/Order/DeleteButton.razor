@@ -1,0 +1,17 @@
+@if (ConfirmDelete)
+{
+    <button @onclick="DeleteOrder" type="button" class="btn btn-outline-danger">Confirm Delete</button>
+    <button @onclick="() => ConfirmDelete = false" type="button" class="btn btn-secondary">Cancel</button>
+}
+else
+{
+    <button @onclick="() => ConfirmDelete = true" type="button" class="btn btn-danger">Delete Order</button>
+}
+
+@code
+{
+    [Parameter]
+    public EventCallback DeleteOrder { get; set; }
+
+    public bool ConfirmDelete { get; set; }
+}

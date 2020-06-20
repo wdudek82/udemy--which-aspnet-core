@@ -1,5 +1,7 @@
 @page "/Order/Display/{Id:int}"
-@using DataLibrary.Data
+@using BlazorServerDemoApp.Models
+
+@inject NavigationManager NavigationManager
 @inject IFoodData FoodData
 @inject IOrderData OrderData
 
@@ -18,27 +20,55 @@ else
     <table class="table">
         <tbody>
         <tr>
-            <td><strong>Order Name</strong></td>
+            <td>
+                <strong>Order Name</strong>
+            </td>
             <td>@_order.OrderName</td>
         </tr>
         <tr>
-            <td><strong>Order Date</strong></td>
+            <td>
+                <strong>Order Date</strong>
+            </td>
             <td>@_order.OrderDate</td>
         </tr>
         <tr>
-            <td><strong>Item Ordered</strong></td>
+            <td>
+                <strong>Item Ordered</strong>
+            </td>
             <td>@_itemPurchased</td>
         </tr>
         <tr>
-            <td><strong>Quantity</strong></td>
+            <td>
+                <strong>Quantity</strong>
+            </td>
             <td>@_order.Quantity</td>
         </tr>
         <tr>
-            <td><strong>Total</strong></td>
+            <td>
+                <strong>Total</strong>
+            </td>
             <td>@($"{_order.Total:C}")</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <DeleteButton DeleteOrder="DeleteOrder"/>
+            </td>
         </tr>
         </tbody>
     </table>
+
+    <EditForm Model="@_updateModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator/>
+        <ValidationSummary Model="@_updateModel"/>
+        <div class="form-group">
+            <label class="control-label">Name</label>
+            <InputText @bind-Value="_updateModel.OrderName" class="form-control"/>
+            <ValidationMessage For="@(() => _updateModel.OrderName)" class="text-danger"/>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update Order Name</button>
+        </div>
+    </EditForm>
 }
 
 @code
@@ -48,6 +78,8 @@ else
 
     private OrderModel _order = new OrderModel();
     private string _itemPurchased;
+    private OrderUpdateModel _updateModel = new OrderUpdateModel();
+
     private List<FoodModel> _foodItems = new List<FoodModel>();
     public bool IsLoading { get; set; }
 
@@ -68,9 +100,25 @@ else
             var price = food?.Price ?? 0;
             _itemPurchased = food?.Title ?? "-";
             order.Total = order.Quantity * price;
+
+            _updateModel.Id = _order.Id;
+            _updateModel.OrderName = _order.OrderName;
         }
 
         IsLoading = false;
         return order;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await OrderData.UpdateOrderName(_updateModel.Id, _updateModel.OrderName);
+        _order.OrderName = _updateModel.OrderName;
+    }
+
+    private async Task DeleteOrder()
+    {
+        await OrderData.DeleteOrder(_order.Id);
+
+        NavigationManager.NavigateTo("/Order/Create");
     }
 }

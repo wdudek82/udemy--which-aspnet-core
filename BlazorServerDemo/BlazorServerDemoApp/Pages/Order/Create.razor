@@ -1,7 +1,8 @@
 @page "/Order/Create"
-@using DataLibrary.Data
+
 @inject IFoodData FoodData
 @inject IOrderData OrderData
+@inject NavigationManager NavigationManager
 
 <h3>Create</h3>
 
@@ -11,12 +12,12 @@
     <div class="form-group">
         <label class="control-label">Item to Order</label>
         <select @bind="order.FoodId" class="form-control">
-             <option value="0">Select a meal...</option>
-             @foreach (var food in foodItems)
-             {
-                 <option value="@food.Id">@food.Title</option>
-             }
-         </select>
+            <option value="0">Select a meal...</option>
+            @foreach (var food in foodItems)
+            {
+                <option value="@food.Id">@food.Title</option>
+            }
+        </select>
     </div>
     <div class="form-group">
         <label class="control-label">Quantity</label>
@@ -35,6 +36,9 @@
 
 @code
 {
+    [Parameter]
+    public int Id { get; set; }
+
     private OrderModel order = new OrderModel();
     private List<FoodModel> foodItems = new List<FoodModel>();
 
@@ -50,6 +54,6 @@
 
         var id = await OrderData.CreateOrder(order);
 
-        order = new OrderModel();
+        NavigationManager.NavigateTo($"Order/Display/{id}");
     }
 }
