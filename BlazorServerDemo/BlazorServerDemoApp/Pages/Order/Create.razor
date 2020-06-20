@@ -10,20 +10,13 @@
     <ValidationSummary Model="@order"/>
     <div class="form-group">
         <label class="control-label">Item to Order</label>
-         <select @onchange="FoodItemChange" class="form-control">
-             <option value="">Select a meal...</option>
+        <select @bind="order.FoodId" class="form-control">
+             <option value="0">Select a meal...</option>
              @foreach (var food in foodItems)
              {
-                 <options value="@food.Id">@food.Title</options>
+                 <option value="@food.Id">@food.Title</option>
              }
          </select>
-@*         <select @bind="order.FoodId" class="form-control"> *@
-@*             <option value="0">Select a meal...</option> *@
-@*             @foreach (var food in _foodItems) *@
-@*             { *@
-@*                 <options value="@food.Id">@food.Title</options> *@
-@*             } *@
-@*         </select> *@
     </div>
     <div class="form-group">
         <label class="control-label">Quantity</label>
@@ -31,7 +24,7 @@
         <ValidationMessage For="@(() => order.Quantity)" class="text-danger"/>
     </div>
     <div class="form-group">
-        <label class="contro-label">Name</label>
+        <label class="control-label">Name</label>
         <InputText @bind-Value="order.OrderName" class="form-control"/>
         <ValidationMessage For="@(() => order.OrderName)" class="text-danger"/>
     </div>
@@ -58,18 +51,5 @@
         var id = await OrderData.CreateOrder(order);
 
         order = new OrderModel();
-    }
-
-    private void FoodItemChange(ChangeEventArgs e)
-    {
-        Console.WriteLine($"=== event: {e}");
-        if (!string.IsNullOrWhiteSpace(e.Value.ToString()))
-        {
-            order.FoodId = int.Parse(e.Value.ToString());
-        }
-        else
-        {
-            order.FoodId = 0;
-        }
     }
 }
