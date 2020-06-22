@@ -11,7 +11,7 @@ else
 @code
 {
     [Parameter]
-    public Action DeleteOrder { get; set; }
+    public Func<Task> DeleteOrder { get; set; }
 
     public bool ConfirmDelete { get; set; }
 }

@@ -18,11 +18,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Food" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Update="Pages\Order\Create.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+      <Content Update="Pages\Order\Display.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+      <Content Update="Pages\Food\List.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+      <Content Update="Pages\Order\DeleteButton.razor">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </Content>
     </ItemGroup>
